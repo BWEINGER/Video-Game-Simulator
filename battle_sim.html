@@ -1,0 +1,220 @@
+<head>
+<link href="http://www.adventuresofthespiral.com/wp-content/themes/AoSTheme1/style.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="battle_sim.css">
+<meta charset="utf-8">
+<script src="battle_sim.js"></script>
+<title>Battle Simulator</title>
+</head>
+<body>
+<div id="simulator_wrapper">
+<div id="battle_sim_form1">
+	<form id="battle_sim" onsubmit="return combatSimulator()">
+	<div id="enemy_header">UNIT INFORMATION</div>
+    <label for="u_name">Unit Name: </label> <input type="text" id="unit_name">
+    <br/>
+    <label for="u_class">Unit Class:</label>
+    <!-- Button types changed from checkboxes to radio buttons, IDs remain the same --> 
+    
+    
+    <div class="class-selector">
+
+          <input  id="buccaneer_checkbox" type="radio" name="class_selector"  onclick="setClassBuccaneer();displayMeleeEpics();changeBaseStatStrength();changeEnemyDefenseType();lockTextFields()"/>
+     <label class="drinkcard-class" for="buccaneer_checkbox">    <img src="http://adventuresofthespiral.com/battle-sim/Icon_Class_Buccaneer.png" alt="Buccaneer" width="40px" title="Buccaneers are tough warriors with high health and armor, though they tend to lack in sheer damage."> </label>
+              
+        <input id="musketeer_checkbox" type="radio" name="class_selector"  onclick="setClassMusketeer();displayRangedEpics();changeBaseStatAgility();changeEnemyDefenseType();lockTextFields()"/>
+       <label class="drinkcard-class "for="musketeer_checkbox">    <img src="http://adventuresofthespiral.com/battle-sim/Icon_Class_Musketeer.png" alt="Musketeer" width="40px" title="Musketeers are long-ranged fighters, boasting high accuracy but low dodge."></label>
+        
+
+        <input id="privateer_checkbox" type="radio" name="class_selector" onclick="setClassPrivateer();displayMeleeEpics();displayRangedEpics();changeBaseStatWill();changeEnemyDefenseType();lockTextFields()"/>
+        <label class="drinkcard-class" for="privateer_checkbox"><img src="http://adventuresofthespiral.com/battle-sim/Icon_Class_Privateer.png" alt="Privateer" width="40px" title="Privateers are versatile, resembling Buccaneers or Musketeers depending on their weapon of choice."></label>
+
+        
+        <input id="swashbuckler_checkbox" type="radio" name="class_selector" onclick="setClassSwashbuckler();displayMeleeEpics();changeBaseStatAgility();changeEnemyDefenseType();lockTextFields()" />
+        <label class="drinkcard-class "for="swashbuckler_checkbox"> <img src="http://adventuresofthespiral.com/battle-sim/Icon_Class_Swashbuckler.png" alt="Swashbuckler" width="40px" title="Swashbucklers often lack durability, but they make up for this with their high damage and dodge."></label>
+        
+              
+        
+        <input id="witchdoctor_checkbox" type="radio" name="class_selector" onclick="setClassWitchdoctor();displayMagicalEpics();changeBaseStatWill();changeEnemyDefenseType();lockTextFields()" />
+        <label class="drinkcard-class"for="witchdoctor_checkbox"> <img src="http://adventuresofthespiral.com/battle-sim/Icon_Class_WitchDoctor.png" alt="Witchdoctor" width="40px" title="Witchdoctors are the most fragile of the classes, but they also have the widest range of powers."></label>
+        
+      
+    </div>
+
+
+
+      
+    
+    <label for="u_level">Unit level:</label> <input type="number" name="u_level" id="unit_level" min="1" max="70">
+    <br/>
+    <label id="usedef" for="use_default">Use Default Stats:</label> <input type="checkbox" name="use_default" id="hide_checkbox" checked onclick="hideStats()" > &nbsp&nbsp&nbsp
+         <div id="privateer_selector">
+        <input type="radio" name="select_melee" id="melee_privateer" onclick="setPrivateerMelee();displayMeleeEpics();changeEnemyDefenseType()"> <text>Melee</text>
+        <input type="radio" name="select_ranged" id="ranged_privateer" onclick="setPrivateerRanged();displayRangedEpics();changeEnemyDefenseType()"> <text>Ranged</text>
+        </div>
+    <br/>
+    <div id="default_checked">
+    <img src="Icon_Attribute_Accuracy.png" width="30px" value="0" alt="Accuracy" title="Accuracy increases your chances of a successful attack">
+    <input type="number" min="0" name="accuracy" id="unit_accuracy">
+    <img src="Icon_Attribute_Dodge.png" width="30px" value="0" alt="Dodge" title="Dodge decreases the enemy's chances of a successful attack">
+    <input type="number" min="0" name="dodge" id="unit_dodge">
+    <img src="Icon_Attribute_Damage.png" width="30px" value="0" alt="Damage" title="Damage is dealt to the enemy's Health after attacking">
+    <input type="number" min="0" name="damage" id="unit_damage">
+    <br/>
+    <img src="Icon_Attribute_Health.png" width="30px" value="0" alt="Health" title="Health is how much Damage can be taken before being defeated">
+    <input type="number" min="0" name="health" id="unit_health">
+    <img src="Icon_Attribute_Strength.png" width="30px" value="0" alt="Base Stat" id="base_stat_image" title="Base Stat gives you an edge over an enemy whose Base Stat of the same type is lower">
+    <input type="number" min="0" name="base_stat" id="unit_base_stat">
+    <img src="Icon_Attribute_Armor.png" width="30px" value="0" alt="Armor/Resist" id="armor_image" title="Armor and Resist decrease the amount of Damage you take">
+    <input type="number" min="0" name="armor" id="unit_defense">
+    </div>
+    <br/>
+    <div id="epic_abilities">
+    Click to increase epic ability ranks. Mouseover for descriptions.
+    <br/>
+    <img id="blade_storm" width="250px" src="BladeStorm0.png" title="Make a bonus attack after a critical hit" onclick="changeBladeStorm()">
+    <img id="relentless" width="250px" src="Relentless0.png" title="Gain a chance to make a bonus attack if you hit" onclick="changeRelentless()">
+    <img id="cheap_shot" width="250px" src="CheapShot0.png" title="Make a bonus attack if the enemy disengages" onclick="changeCheapShot()">
+    <img id="repel_boarders" width="250px" src="RepelBorders0.png" title="Make a bonus attack when the enemy moves into range" onclick="changeRepelBoarders()">
+    <img id="first_strike" width="250px" src="FirstStrike0.png" title="Make a bonus attack before the enemy hits" onclick="changeFirstStrike()">
+    <img id="riposte" width="250px" src="Riposte0.png" title="Make a bonus attack when the enemy misses" onclick="changeRiposte()">
+    <img id="flanking" width="250px" src="Flanking0.png" title="Make a bonus sneak attack when flanking" onclick="changeFlanking()">
+    <img id="second_chance" width="250px" src="SecondChance0.png" title="Make a bonus attack if you miss" onclick="changeSecondChance()">
+    <img id="hold_the_line" width="250px" src="HTL0.png" title="Halt enemies who move into an adjacent position to you" onclick="changeHoldTheLine()">
+    <img id="vengeance_strike" width="250px" src="VengStrike0.png" title="Make a bonus attack after the enemy hits" onclick="changeVengeanceStrike()">
+    <br/>
+    <br/>
+  <label id="showadv" fpr="enemy_class_epics_text">   <text id="class_epics_text" style="width: 190px;">Show Advanced Epics:</text> <input type="checkbox" name="class_based" id="class_based_checkbox" onchange="toggleClassBasedEpics()"></label>
+    <div id="class_based_checked">
+        <br/>
+        <img id="elusive" width="250px" src="Elusive0.png" title="Bonus Dodge when Health falls below 50%" onclick="changeElusive()">
+        <img id="improvedmojoblast" width="250px" src="IMB0.png" title="Basic magic attack affects a larger area. +10% Damage at Rank 3. Must be a Witchdoctor to use." onclick="changeImprovedMojoBlast()">
+        <img id="turnthetide" width="250px" src="TurnTheTide0.png" title="Additional Damage, Accuracy, and Dodge when Health falls below 50%" onclick="changeTurnTheTide()">
+        <img id="witchhunter" width="250px" src="WitchHunter0.png" title="Make a bonus attack if the enemy uses magic. Enemy loses 50% Damage" onclick="changeWitchHunter()">
+ 
+        </div>
+    <br/>
+    <br/>
+  	<input type="submit" name="Attack" value="">
+    </div>
+    </form>
+</div>
+<div id="battle_sim_form2">
+	<form id="battle_sim_enemy">
+	<div id="enemy_header">ENEMY INFORMATION</div>
+    <label for="e_name">Enemy Name: </label> <input type="text" id="enemy_name">
+    <br/>
+    <label for="e_class">Enemy Class: </label>
+<div class="class-selector">
+
+          <input  id="enemy_buccaneer_checkbox" type="radio" name="class_selector"  onclick="setEnemyClassBuccaneer();displayEnemyMeleeEpics();changeEnemyBaseStatStrength();changeDefenseType()"/>
+     <label class="drinkcard-class" for="enemy_buccaneer_checkbox">    <img src="http://adventuresofthespiral.com/battle-sim/Icon_Class_Buccaneer.png" alt="Buccaneer" width="40px" title="Buccaneers are tough warriors with high health and armor, though they tend to lack in sheer damage."> </label>
+              
+        <input id="enemy_musketeer_checkbox" type="radio" name="class_selector"  onclick="setEnemyClassMusketeer();displayEnemyRangedEpics();changeEnemyBaseStatAgility();changeDefenseType()"/>
+       <label class="drinkcard-class "for="enemy_musketeer_checkbox">    <img src="http://adventuresofthespiral.com/battle-sim/Icon_Class_Musketeer.png" alt="Musketeer" width="40px" title="Musketeers are long-ranged fighters, boasting high accuracy but low dodge."></label>
+        
+
+        <input id="enemy_privateer_checkbox" type="radio" name="class_selector" onclick="setEnemyClassPrivateer();displayEnemyMeleeEpics();displayEnemyRangedEpics();changeEnemyBaseStatWill();changeDefenseType()"/>
+        <label class="drinkcard-class" for="enemy_privateer_checkbox"><img src="http://adventuresofthespiral.com/battle-sim/Icon_Class_Privateer.png" alt="Privateer" width="40px" title="Privateers are versatile, resembling Buccaneers or Musketeers depending on their weapon of choice."></label>
+
+        
+        <input id="enemy_swashbuckler_checkbox" type="radio" name="class_selector" onclick="setEnemyClassSwashbuckler();displayEnemyMeleeEpics();changeEnemyBaseStatAgility();changeDefenseType()" />
+        <label class="drinkcard-class "for="enemy_swashbuckler_checkbox"> <img src="http://adventuresofthespiral.com/battle-sim/Icon_Class_Swashbuckler.png" alt="Swashbuckler" width="40px" title="Swashbucklers often lack durability, but they make up for this with their high damage and dodge."></label>
+        
+              
+        
+        <input id="enemy_witchdoctor_checkbox" type="radio" name="class_selector" onclick="setEnemyClassWitchdoctor();displayEnemyMagicalEpics();changeEnemyBaseStatWill();changeDefenseType()" />
+        <label class="drinkcard-class"for="enemy_witchdoctor_checkbox"> <img src="http://adventuresofthespiral.com/battle-sim/Icon_Class_WitchDoctor.png" alt="Witchdoctor" width="40px" title="Witchdoctors are the most fragile of the classes, but they also have the widest range of powers."></label>
+        
+      
+    </div>
+
+
+
+    
+  
+    
+  
+
+	<label for="e_level">Enemy level: </label> <input type="number" name="e_level" id="enemy_level" min="1" max="70">
+    <br/>
+    <label for="e_use_def" id="usedef">Use Default Stats:</label> <input type="checkbox" name="use_default" id="enemy_hide_checkbox" checked onclick="hideEnemyStats()"></label>
+     <div id="enemy_privateer_selector">
+        <input type="radio" name="select_melee" id="enemy_melee_privateer" onclick="setEnemyPrivateerMelee();displayEnemyMeleeEpics();changeDefenseType()"> <text>Melee</text>
+        <input type="radio" name="select_ranged" id="enemy_ranged_privateer" onclick="setEnemyPrivateerRanged();displayEnemyRangedEpics();changeDefenseType()"> <text>Ranged</text>
+    </div>
+    <br/>
+    <div id="enemy_default_checked">
+    <img src="Icon_Attribute_Accuracy.png" width="30px" value="0" alt="Accuracy" title="Accuracy increases your chances of a successful attack">
+    <input type="number" min="0" name="e_accuracy" id="enemy_accuracy">
+    <img src="Icon_Attribute_Dodge.png" width="30px" value="0" alt="Dodge" title="Dodge decreases the enemy's chances of a successful attack">
+    <input type="number" min="0" name="e_dodge" id="enemy_dodge">
+    <img src="Icon_Attribute_Damage.png" width="30px" value="0" alt="Damage" title="Damage is dealt to the enemy's Health after attacking">
+    <input type="number" min="0" name="e_damage" id="enemy_damage">
+    <br/>
+    <img src="Icon_Attribute_Health.png" width="30px" value="0" alt="Health" title="Health is how much Damage can be taken before being defeated">
+    <input type="number" min="0" name="e_health" id="enemy_health">
+    <img src="Icon_Attribute_Strength.png" width="30px" value="0" alt="Base Stat" id="enemy_base_stat_image" title="Base Stat gives you an edge over an enemy whose Base Stat of the same type is lower">
+    <input type="number" min="0" name="e_strength" id="enemy_base_stat">
+    <img src="Icon_Attribute_Armor.png" width="30px" value="0" alt="Armor/Resist" id="enemy_armor_image" title="Armor and Resist decrease the amount of Damage you take">
+    <input type="number" min="0" name="e_resist" id="enemy_defense">
+    </div>
+    <br/>
+    <div id="enemy_epic_abilities">
+    Click to increase epic ability ranks. Mouseover for descriptions.
+    <br/>
+    <img id="enemy_blade_storm" width="250px" src="BladeStorm0.png" title="Make a bonus attack after a critical hit" onclick="isEnemy();changeBladeStorm()">
+    <img id="enemy_relentless" width="250px" src="Relentless0.png" title="Gain a chance to make a bonus attack if you hit" onclick="isEnemy();changeRelentless()">
+    <img id="enemy_cheap_shot" width="250px" src="CheapShot0.png" title="Make a bonus attack if the enemy disengages" onclick="isEnemy();changeCheapShot()">
+    <img id="enemy_repel_boarders" width="250px" src="RepelBorders0.png" title="Make a bonus attack when the enemy moves into range" onclick="isEnemy();changeRepelBoarders()">
+    <img id="enemy_first_strike" width="250px" src="FirstStrike0.png" title="Make a bonus attack before the enemy hits" onclick="isEnemy();changeFirstStrike()">
+    <img id="enemy_riposte" width="250px" src="Riposte0.png" title="Make a bonus attack when the enemy misses" onclick="isEnemy();changeRiposte()">
+    <img id="enemy_flanking" width="250px" src="Flanking0.png" title="Make a bonus sneak attack when flanking" onclick="isEnemy();changeFlanking()">
+    <img id="enemy_second_chance" width="250px" src="SecondChance0.png" title="Make a bonus attack if you miss" onclick="isEnemy();changeSecondChance()">
+    <img id="enemy_hold_the_line" width="250px" src="HTL0.png" title="Halt enemies who move into an adjacent position to you" onclick="isEnemy();changeHoldTheLine()">
+    <img id="enemy_vengeance_strike" width="250px" src="VengStrike0.png" title="Make a bonus attack after the enemy hits" onclick="isEnemy();changeVengeanceStrike()">
+    <br/>
+    <br/>
+    <label for="enemy_class_epics_text" id="showadv"><text id="enemy_class_epics_text" style="width: 230px;">Show Advanced Epics:</text> <input type="checkbox" name="enemy_class_based" id="enemy_class_based_checkbox" onchange="toggleEnemyClassBasedEpics()"></label>
+    <div id="enemy_class_based_checked">
+        <br/>
+        <img id="enemyelusive" width="250px" src="Elusive0.png" title="Bonus Dodge when Health falls below 50%" onclick="isEnemy();changeElusive()">
+        <img id="enemyimprovedmojoblast" width="250px" src="IMB0.png" title="Basic magic attack affects a larger area. +10% Damage at Rank 3. Must be a Witchdoctor to use." onclick="isEnemy();changeImprovedMojoBlast()">
+        <img id="enemyturnthetide" width="250px" src="TurnTheTide0.png" title="Additional Damage, Accuracy, and Dodge when Health falls below 50%" onclick="isEnemy();changeTurnTheTide()">
+        <img id="enemywitchhunter" width="250px" src="WitchHunter0.png" title="Make a bonus attack if the enemy uses magic. Enemy loses 50% Damage" onclick="isEnemy();changeWitchHunter()">
+ 
+        </div>
+    <br/>
+    <br/>
+    </div>
+    </form>
+</div>
+</div>
+<div class="results_wrapper">
+<div id="results_header">RESULTS</div>
+<div id="results_box" style="height:200px;width:778px;overflow:auto;background-color:black;color:white;scrollbar-base-color:gold;font-family:sans-serif;padding:10px;  float: left;">
+<p id="choice1html"></p><text id="defeatchancehtml"></text><br><text id="enemydefeatchancehtml"></text>
+    <br><br>
+    <text id="alternativestext"></text>
+    <br>
+    <text id="otherchoiceshtml"></text>
+</div>
+ 
+ <br>
+<div id="simulation" style="height:375px;width:375px;overflow:auto;background-color:black;color:white;scrollbar-base-color:gold;font-family:sans-serif;padding:10px;     margin-left: -800px;
+    margin-top: 204px;">Click the button below to generate a simulation. Simulations are possible outcomes that can occur, and the simulator analyzes the likelihood of each to determine the best option.</div> 
+<div id="return_button"><button type="button" style="height:50px;width:397px;font-size:18px;     position: relative;  top: -365;" onclick="returnToSimulator()">Return to Simulator</button>
+</div>
+    <br>
+    <div id="simulation_button">
+    <button type="button" style="height:30px;width:397px;font-size:18px;" onclick="newSimulation();combatSimulator()">New Simulation</button></div>
+    </div>
+<div id="footer">
+        
+        <p>© <a href="/">Adventures of the Spiral</a> 2015, Portion © <a href="http://www.kingsisle.com">Kingsisle Entertainment</a>
+		<br />
+	All content on this site requires permission for reprint
+	</p>
+     
+     </div>
+</body>
+</html>
