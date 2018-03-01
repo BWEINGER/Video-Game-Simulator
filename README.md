@@ -76,7 +76,7 @@ The core of the simulation algorithm, attempts to model an instance of combat wi
     If the user enters the name of an in-game unit who possesses a power, a prompt will appear asking whether or not to use it. Some         units have multiple powers, though only one can be used per instance of combat.
     
   Line 2302 - COMBAT SIMULATOR:
-    The main algorithm of the code; the player's unit will attack the enemy unit, and any epic abilities will trigger. The "health" of       both parties are kept track of, and combat will end either when either health value reaches zero or the chain of attacks comes to an     end.
+    The main algorithm of the code; the player's unit will attack the enemy unit, and any epic abilities will trigger. The "health" of       both parties are kept track of, and combat will end either when either health value reaches zero or the chain of attacks comes to an     end. Prints out a sample simulation when requested by the user.
     
   Line 5226 - OPTION ANALYSIS:
     Loops the combat algorithm, with the amount of iterations dependant on the number of options available (this is determined by which     epic abilities the user selects, providing benefits from alternatives other than a standard attack, such as disengaging, approaching     with another unit, etc. Keeps track of number of "successful" and "unsuccessful" simulations, rated by comparing the proportion of       health each party has remaining at the end of an instance of combat.  
