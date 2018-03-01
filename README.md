@@ -36,26 +36,57 @@ The core of the simulation algorithm, attempts to model an instance of combat wi
    
   Line 735 - INITIALIZE UNIT NAME, CLASS, & LEVEL
   
-    Important variables that will impact what variables are used in the combat algorithm.
+   Important variables that will impact what variables are used in the combat algorithm.
    
   Line 753 - DEFAULT STAT CALCULATIONS (BEST FIT TRENDS)
   
    If the user does not customize their statistics (i.e. accuracy affecting the likelihood of an attack succeeding, dodge affecting the    likelihood of an opponent's attack missing, armor affecting damage calculations, etc.), a regression algorithm will determine default    ones based on inputted class and level. This was created using a large pool of data from game wikipedia sources (taken with
    permission), and while not completely accurate, it does provide a useful model with minimal margin of error.
    
- Line 1122 - REPLACE APPLICABLE STATS WITH USER INPUTS
- Line 1200 - INITIALIZE ENEMY NAME, CLASS, & LEVEL
- Line 1217 - ENEMY DEFAULT STAT CALCULATIONS (SAME TRENDS AS LINES 449-818)
- Line 1582 - REPLACE APPLICABLE ENEMY STATS WITH USER INPUTS
- Line 1660 - CONFIRMATION MESSAGES
- Line 1686 - EPIC ABILITY RANKS
- Line 1818 - ENEMY EPIC ABILITY RANKS
- Line 1950 - OTHER VARIABLES
- Line 1969 - WEAPON TYPE
- Line 1984 - ENEMY WEAPON TYPE
- Line 1999 - POWER FUNCTIONS
- Line 2255 - UNITS WITH AVAILABLE POWERS
- Line 2302 - COMBAT SIMULATOR
- Line 5226 - OPTION ANALYSIS
- Line 5287 - CALCULATE RESPONSE
- Line 5340 - NOTES
+  Line 1122 - REPLACE APPLICABLE STATS WITH USER INPUTS
+   If any statistics were entered by the user, they will be prioritized over ones calculated via the default algorithm.
+   
+  Line 1200 - INITIALIZE ENEMY NAME, CLASS, & LEVEL
+   See Line 753 note.
+   
+  Line 1217 - ENEMY DEFAULT STAT CALCULATIONS
+   See Line 753 note.
+   
+  Line 1582 - REPLACE APPLICABLE ENEMY STATS WITH USER INPUTS
+   See line 1122 note.
+   
+  Line 1660 - CONFIRMATION MESSAGES
+   Alterts the user to ensure statistics fields are completed as desired before running any combat simulations. Returns if the user does    not confirm.
+   
+  Line 1686 - EPIC ABILITY RANKS
+   Creates variables for epic abilities depending on the images the user toggled to.
+   
+  Line 1818 - ENEMY EPIC ABILITY RANKS
+   See Line 1686 note.
+   
+  Line 1950 - OTHER VARIABLES
+   Important variables for running option analysis after completing the simulations.
+   
+  Line 1969 - WEAPON TYPE
+   Used to determine what epic abilities can respond to each other (i.e. so an enemy attacking at a distance is not attacked with a        close-range ability).
+   
+  Line 1984 - ENEMY WEAPON TYPE
+   See Line 1969 note.
+   
+  Line 1999 - POWER FUNCTIONS
+   "Powers" are special attacks that have added functionality, such as altering the value of a statistic to gain an advantage or giving    the enemy a disadvantage. Implements major powers that have substantial impact on combat.
+   
+  Line 2255 - UNITS WITH AVAILABLE POWERS
+    If the user enters the name of an in-game unit who possesses a power, a prompt will appear asking whether or not to use it. Some         units have multiple powers, though only one can be used per instance of combat.
+    
+  Line 2302 - COMBAT SIMULATOR
+    The main algorithm of the code; the player's unit will attack the enemy unit, and any epic abilities will trigger. The "health" of       both parties are kept track of, and combat will end either when either health value reaches zero or the chain of attacks comes to an     end.
+    
+  Line 5226 - OPTION ANALYSIS
+    Loops the combat algorithm, with the amount of iterations dependant on the number of options available (this is determined by which     epic abilities the user selects, providing benefits from alternatives other than a standard attack, such as disengaging, approaching     with another unit, etc. Keeps track of number of "successful" and "unsuccessful" simulations, rated by comparing the proportion of       health each party has remaining at the end of an instance of combat.  
+    
+  Line 5287 - CALCULATE RESPONSE
+    The option with the highest success rate will be determined, and if it is greater than or equal to 50%, it will be recommended to       the user. Other alternatives are included with their probability of success as well. The user will be informed if all options are       likely to fail (i.e. probability of success is less than 50%) and that engaging in combat is not recommended.
+    
+  Line 5340 - NOTES
+    Specifications on the nature of calculations, rules of combat, and important assumptions made in the combat algorithm.
