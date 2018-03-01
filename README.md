@@ -27,15 +27,19 @@ Ensures proper formatting and page alignment of the HTML form, and allows for sm
 The core of the simulation algorithm, attempts to model an instance of combat with the highest possible accuracy. Table of contents restated here with further elaboration on each section.
 
  Line 24 - UI FUNCTIONS
+ 
   Functions called when the user alters the interface (i.e. clicks a button, unchecks a box, resets the simulator, etc.). While does not   directly impact how the code runs, ensures the user is aware of precisely what paramaters they are entering and how they will impact     the combat algorithm.
 
   Line 430 - CHANGE EPIC ABILITY RANKS
+  
    "Epic abilities" are a core element of combat, defined as attacks that trigger under specific circumstances. Mousing over an epic        ability image on the interface displays when it can be used. The interface allows the user to toggle the "rank" (primarily indicating    the number of times an ability can activate per instance of combat) by clicking on the image of an epic ability, and so this section    of the code modifies the image clicked on based on the previous one and the "class" the user selects (each class has a different set    of epic abilities).
    
   Line 735 - INITIALIZE UNIT NAME, CLASS, & LEVEL
+  
     Important variables that will impact what variables are used in the combat algorithm.
    
   Line 753 - DEFAULT STAT CALCULATIONS (BEST FIT TRENDS)
+  
    If the user does not customize their statistics (i.e. accuracy affecting the likelihood of an attack succeeding, dodge affecting the    likelihood of an opponent's attack missing, armor affecting damage calculations, etc.), a regression algorithm will determine default    ones based on inputted class and level. This was created using a large pool of data from game wikipedia sources (taken with
    permission), and while not completely accurate, it does provide a useful model with minimal margin of error.
    
