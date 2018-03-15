@@ -43,7 +43,7 @@ The core of the simulation algorithm, attempts to model an instance of combat wi
    If any statistics were entered by the user, they will be prioritized over ones calculated via the default algorithm.
    
   Line 1200 - INITIALIZE ENEMY NAME, CLASS, & LEVEL:
-   See Line 753 note.
+   See Line 735 note.
    
   Line 1217 - ENEMY DEFAULT STAT CALCULATIONS:
    See Line 753 note.
